@@ -2,457 +2,62 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CodePet</title>
-<style>
-  :root{
-    --shell-1:#d6b8ea;
-    --shell-2:#b087cf;
-    --shell-dark:#7c5a96;
-    --shell-shadow:#5b3f70;
-    --bezel:#2b2430;
-    --lcd-bg:#9bbc0f;
-    --lcd-mid:#8bac0f;
-    --lcd-dark:#306230;
-    --lcd-darkest:#0f380f;
-    --page-bg:#f2e9f7;
-    --ink:#3a2e46;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    min-height:100vh;
-    background:
-      radial-gradient(circle at 20% 15%, #efe0fb 0%, transparent 45%),
-      radial-gradient(circle at 85% 80%, #e3d3f6 0%, transparent 40%),
-      var(--page-bg);
-    font-family: ui-monospace, "SF Mono", "Courier New", monospace;
-    color:var(--ink);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:28px 14px;
-  }
-  .wrap{width:100%;max-width:380px;}
-  .eyebrow{
-    text-align:center;
-    font-size:11px;
-    letter-spacing:.28em;
-    text-transform:uppercase;
-    color:var(--shell-shadow);
-    margin-bottom:6px;
-    font-weight:700;
-  }
-  h1{
-    text-align:center;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-weight:800;
-    font-size:26px;
-    letter-spacing:-0.01em;
-    margin:0 0 18px;
-    color:var(--ink);
-  }
-  h1 span{color:var(--shell-dark);}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodePet 2.0</title>
 
-  /* --- device shell --- */
-  .device{
-    background:linear-gradient(155deg, var(--shell-1), var(--shell-2));
-    border-radius:34px 34px 46px 46px;
-    padding:20px 20px 26px;
-    box-shadow:
-      0 2px 0 rgba(255,255,255,.5) inset,
-      0 -10px 18px rgba(91,63,112,.35) inset,
-      0 18px 34px -14px rgba(91,63,112,.55);
-    position:relative;
-  }
-  .speaker{
-    display:flex; justify-content:center; gap:6px; margin-bottom:14px;
-  }
-  .speaker i{
-    width:5px;height:5px;border-radius:50%;
-    background:var(--shell-shadow); opacity:.5;
-  }
+<link rel="stylesheet" href="style.css">
 
-  .bezel{
-    background:var(--bezel);
-    border-radius:14px;
-    padding:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,.35) inset;
-  }
-  .screen{
-    background:var(--lcd-bg);
-    border-radius:6px;
-    padding:10px 10px 8px;
-    box-shadow:0 2px 6px rgba(0,0,0,.25) inset;
-  }
-  .screen-top{
-    display:flex; justify-content:space-between; align-items:center;
-    font-size:9px; letter-spacing:.08em; color:var(--lcd-darkest);
-    font-weight:700; margin-bottom:4px; text-transform:uppercase;
-  }
-  .pet-name{
-    background:transparent; border:none; border-bottom:1px dashed var(--lcd-darkest);
-    color:var(--lcd-darkest); font-family:inherit; font-size:9px; font-weight:700;
-    width:70px; text-align:right; text-transform:uppercase; letter-spacing:.08em;
-    padding:0;
-  }
-  .pet-name:focus{outline:none;}
-
-  svg.pet-sprite{
-    display:block; width:100%; height:auto; aspect-ratio:1/1;
-    image-rendering:pixelated;
-    margin:2px 0;
-  }
-
-  .bubble{
-    min-height:30px;
-    font-size:10px; line-height:1.45;
-    color:var(--lcd-darkest);
-    text-align:center;
-    padding:4px 4px 2px;
-    font-weight:600;
-  }
-
-  .meter{
-    height:8px; border-radius:2px; background:rgba(15,56,15,.18);
-    overflow:hidden; margin:8px 2px 2px;
-  }
-  .meter-fill{
-    height:100%; background:var(--lcd-darkest);
-    width:0%; transition:width .5s ease;
-  }
-  .meter-label{
-    font-size:8px; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--lcd-dark); text-align:center; margin-top:3px; font-weight:700;
-  }
-
-  /* --- stats row --- */
-  .stats{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:6px;
-    margin-top:14px;
-  }
-  .stat{
-    background:rgba(255,255,255,.45);
-    border-radius:10px; padding:8px 4px; text-align:center;
-  }
-  .stat b{display:block; font-size:15px; color:var(--shell-shadow);}
-  .stat span{font-size:8px; letter-spacing:.06em; text-transform:uppercase; opacity:.75;}
-
-  /* --- controls --- */
-  .controls{margin-top:16px;}
-  form{display:flex; gap:6px;}
-  input[type=text]{
-    flex:1; min-width:0;
-    padding:10px 12px; border-radius:12px; border:2px solid var(--shell-dark);
-    background:#fff; font-family: system-ui, sans-serif; font-size:13px;
-    color:var(--ink);
-  }
-  input[type=text]:focus{outline:2px solid var(--shell-shadow); outline-offset:1px;}
-  button{
-    font-family: system-ui, sans-serif; font-weight:700; font-size:12px;
-    border:none; cursor:pointer; border-radius:12px;
-  }
-  .btn-primary{
-    padding:10px 16px; background:var(--shell-shadow); color:#fff;
-  }
-  .btn-primary:disabled{opacity:.55; cursor:default;}
-  .row-buttons{display:flex; gap:8px; margin-top:8px;}
-  .btn-secondary{
-    flex:1; padding:8px 10px; background:rgba(255,255,255,.6);
-    color:var(--shell-shadow); border:2px solid var(--shell-dark);
-  }
-  .btn-secondary:active{transform:translateY(1px);}
-  .note{
-    font-size:10px; text-align:center; color:var(--shell-shadow);
-    opacity:.7; margin-top:12px; line-height:1.5; font-family:system-ui, sans-serif;
-  }
-  .error{
-    font-size:11px; text-align:center; color:#8a2b3b;
-    margin-top:8px; font-family:system-ui, sans-serif; font-weight:600;
-  }
-  @keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-6px);}
-  }
-  .bounce{animation:bounce .5s ease 2;}
-</style>
 </head>
 <body>
-<div class="wrap">
-  <div class="eyebrow">A pet fed by your commits</div>
-  <h1>Code<span>Pet</span></h1>
 
-  <div class="device">
-    <div class="speaker"><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="bezel">
-      <div class="screen">
-        <div class="screen-top">
-          <span id="stageLabel">EGG</span>
-          <input id="petName" class="pet-name" value="BYTE" maxlength="10">
-        </div>
-        <svg id="sprite" class="pet-sprite" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"></svg>
-        <div class="bubble" id="bubble">Enter your GitHub username below to hatch your pet.</div>
-        <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-        <div class="meter-label" id="meterLabel">0 / 1 commits to hatch</div>
-      </div>
-    </div>
+<header>
+<h1>🐾 CodePet 2.0</h1>
+<p>Your GitHub Coding Companion</p>
+</header>
 
-    <div class="stats">
-      <div class="stat"><b id="statCommits">—</b><span>Commits/30d</span></div>
-      <div class="stat"><b id="statStreak">—</b><span>Day streak</span></div>
-      <div class="stat"><b id="statLast">—</b><span>Last active</span></div>
-    </div>
+<div class="container">
 
-    <div class="controls">
-      <form id="loadForm">
-        <input id="username" type="text" placeholder="github username" autocomplete="off" value="gokulprasath-123">
-        <button class="btn-primary" type="submit" id="loadBtn">Hatch</button>
-      </form>
-      <div class="row-buttons">
-        <button class="btn-secondary" id="petBtn" type="button">Pet 💜</button>
-        <button class="btn-secondary" id="refreshBtn" type="button">Refresh</button>
-      </div>
-      <div class="error" id="errorMsg"></div>
-    </div>
-  </div>
+<div class="profile-card">
 
-  <div class="note">
-    Growth is based on your <b>public</b> GitHub push activity from the last ~90 days (private repo commits aren't visible to this). Uses the public GitHub API directly from your browser, unauthenticated — occasional rate limits are normal.
-  </div>
+<h2>GitHub Profile</h2>
+
+<img src="assets/avatar.png" id="avatar">
+
+<h3 id="username">Loading...</h3>
+
+<p>Commits : <span id="commits">0</span></p>
+
+<p>Level : <span id="level">1</span></p>
+
 </div>
 
-<script>
-(function(){
-  const GRID = 18, cx = 9, cy = 10;
+<div class="pet-card">
 
-  const stageDefs = [
-    { key:'egg',      name:'EGG',       rx:2.6, ry:3.4, threshold:0  },
-    { key:'hatch',    name:'HATCHLING', rx:4.0, ry:4.0, threshold:1  },
-    { key:'juv',      name:'JUVENILE',  rx:5.0, ry:5.0, threshold:5  },
-    { key:'adult',    name:'ADULT',     rx:6.0, ry:5.6, threshold:15 },
-    { key:'radiant',  name:'RADIANT',   rx:7.0, ry:6.4, threshold:30 }
-  ];
+<img src="assets/pet.png" id="pet">
 
-  function stageForCommits(c){
-    let idx = 0;
-    for(let i=0;i<stageDefs.length;i++){ if(c>=stageDefs[i].threshold) idx=i; }
-    return idx;
-  }
+<h2>CodePet</h2>
 
-  function moodForDays(days){
-    if(days===null) return 'asleep';
-    if(days<=1) return 'thriving';
-    if(days<=3) return 'okay';
-    if(days<=7) return 'hungry';
-    return 'asleep';
-  }
+<div class="xp-bar">
 
-  const moodMessages = {
-    thriving: n => `${n} is buzzing! Fresh commits today — keep it up.`,
-    okay:     n => `${n} is doing fine, had a snack in the last couple days.`,
-    hungry:   n => `${n} is getting hungry... it's been a few days since your last commit.`,
-    asleep:   n => `${n} is fast asleep. Wake it up with a commit!`
-  };
+<div class="xp-fill"></div>
 
-  function safeSet(m,y,x,v){
-    if(y>=0 && y<GRID && x>=0 && x<GRID && m[y][x]===0) m[y][x]=v;
-  }
+</div>
 
-  function buildSprite(stageIdx, mood){
-    const s = stageDefs[stageIdx];
-    const rx = s.rx, ry = s.ry;
-    const m = Array.from({length:GRID},()=>Array(GRID).fill(0));
+<div class="buttons">
 
-    function inBody(x,y){
-      const dx=x-cx, dy=y-cy;
-      return (dx*dx)/(rx*rx) + (dy*dy)/(ry*ry) <= 1;
-    }
-    for(let y=0;y<GRID;y++){
-      for(let x=0;x<GRID;x++){
-        if(!inBody(x,y)) continue;
-        const edge = !inBody(x-1,y) || !inBody(x+1,y) || !inBody(x,y-1) || !inBody(x,y+1);
-        m[y][x] = edge ? 2 : 1;
-      }
-    }
+<button>🍖 Feed</button>
 
-    if(stageIdx>0){
-      const eyeDX = Math.round(rx*0.42);
-      const eyeY = cy - Math.round(ry*0.25);
-      const mouthY = cy + Math.round(ry*0.35);
-      const lx = cx-eyeDX, rx2 = cx+eyeDX;
+<button>🎮 Play</button>
 
-      if(mood==='asleep'){
-        safeSet(m,eyeY,lx-1,2); safeSet(m,eyeY,lx,2);
-        safeSet(m,eyeY,rx2,2); safeSet(m,eyeY,rx2+1,2);
-        safeSet(m,mouthY,cx,2);
-        safeSet(m,2,14,1); safeSet(m,1,15,1); safeSet(m,3,13,1);
-      } else if(mood==='hungry'){
-        safeSet(m,eyeY+1,lx,2); safeSet(m,eyeY+1,rx2,2);
-        safeSet(m,mouthY-1,cx,2); safeSet(m,mouthY,cx-1,2); safeSet(m,mouthY,cx+1,2);
-      } else if(mood==='okay'){
-        safeSet(m,eyeY,lx,2); safeSet(m,eyeY,rx2,2);
-        safeSet(m,mouthY,cx-1,2); safeSet(m,mouthY,cx,2); safeSet(m,mouthY,cx+1,2);
-      } else { // thriving
-        safeSet(m,eyeY,lx,2); safeSet(m,eyeY,rx2,2);
-        safeSet(m,mouthY,cx,2); safeSet(m,mouthY-1,cx-1,2); safeSet(m,mouthY-1,cx+1,2);
-        safeSet(m,eyeY+1,lx-1,1); safeSet(m,eyeY+1,rx2+1,1);
-      }
-    }
+<button>😴 Sleep</button>
 
-    if(stageIdx>=2){
-      const topY = Math.round(cy-ry);
-      safeSet(m,topY-1,cx,2); safeSet(m,topY-2,cx,1);
-    }
-    if(stageIdx>=3){
-      const lxEdge = cx-Math.round(rx)-1, rxEdge = cx+Math.round(rx)+1;
-      for(let i=-2;i<=2;i++){
-        const off = 2-Math.abs(i);
-        safeSet(m, cy+i, lxEdge-off, 2);
-        safeSet(m, cy+i, rxEdge+off, 2);
-      }
-    }
-    if(stageIdx>=4){
-      const topY = Math.round(cy-ry);
-      safeSet(m,topY-2,cx-1,2); safeSet(m,topY-2,cx+1,2); safeSet(m,topY-3,cx,2);
-      const sparkles = [[cx-9,cy-6],[cx+8,cy-5],[cx-8,cy+6],[cx+9,cy+3]];
-      sparkles.forEach(([x,y])=>safeSet(m,y,x,1));
-      for(let a=0;a<360;a+=60){
-        const rad = a*Math.PI/180;
-        const px = Math.round(cx + (rx+1.6)*Math.cos(rad));
-        const py = Math.round(cy + (ry+1.6)*Math.sin(rad));
-        safeSet(m,py,px,1);
-      }
-    }
-    return m;
-  }
+</div>
 
-  function renderSprite(matrix){
-    const svg = document.getElementById('sprite');
-    svg.innerHTML='';
-    for(let y=0;y<GRID;y++){
-      for(let x=0;x<GRID;x++){
-        const v = matrix[y][x];
-        if(!v) continue;
-        const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
-        r.setAttribute('x',x); r.setAttribute('y',y);
-        r.setAttribute('width',1); r.setAttribute('height',1);
-        r.setAttribute('fill', v===2 ? 'var(--lcd-darkest)' : 'var(--lcd-mid)');
-        svg.appendChild(r);
-      }
-    }
-  }
+</div>
 
-  function petDisplayName(){
-    const v = document.getElementById('petName').value.trim();
-    return (v || 'BYTE').toUpperCase();
-  }
+</div>
 
-  let lastStats = { commits30d:0, streak:0, daysSince:null };
+<script src="script.js"></script>
 
-  function paint(){
-    const { commits30d, streak, daysSince } = lastStats;
-    const stageIdx = stageForCommits(commits30d);
-    const mood = moodForDays(daysSince);
-    const stage = stageDefs[stageIdx];
-
-    renderSprite(buildSprite(stageIdx, mood));
-    document.getElementById('stageLabel').textContent = stage.name;
-    document.getElementById('bubble').textContent = moodMessages[mood](petDisplayName());
-
-    document.getElementById('statCommits').textContent = commits30d;
-    document.getElementById('statStreak').textContent = streak;
-    document.getElementById('statLast').textContent =
-      daysSince===null ? '—' : (daysSince===0 ? 'Today' : daysSince+'d ago');
-
-    const next = stageDefs[stageIdx+1];
-    const fillEl = document.getElementById('meterFill');
-    const labelEl = document.getElementById('meterLabel');
-    if(next){
-      const span = next.threshold - stage.threshold;
-      const prog = Math.min(1, (commits30d - stage.threshold) / span);
-      fillEl.style.width = (prog*100).toFixed(0)+'%';
-      labelEl.textContent = `${commits30d} / ${next.threshold} commits to ${next.name.toLowerCase()}`;
-    } else {
-      fillEl.style.width = '100%';
-      labelEl.textContent = `${commits30d} commits — fully evolved`;
-    }
-  }
-
-  function dateKey(d){ return d.toISOString().slice(0,10); }
-
-  async function loadGitHub(username){
-    const errEl = document.getElementById('errorMsg');
-    const btn = document.getElementById('loadBtn');
-    errEl.textContent=''; btn.disabled = true; btn.textContent='Loading…';
-    try{
-      const userRes = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`);
-      if(userRes.status===404) throw new Error("Couldn't find that GitHub username — check the spelling and try again.");
-      if(!userRes.ok) throw new Error('GitHub API had trouble responding (possibly rate-limited). Try again shortly.');
-
-      const eventsRes = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}/events/public?per_page=100`);
-      if(!eventsRes.ok) throw new Error('GitHub API had trouble responding (possibly rate-limited). Try again shortly.');
-      const events = await eventsRes.json();
-
-      const pushes = events.filter(e=>e.type==='PushEvent');
-      const now = new Date();
-      const cutoff = new Date(now.getTime() - 30*24*60*60*1000);
-
-      let commits30d = 0;
-      const dateSet = new Set();
-      let lastPushDate = null;
-
-      pushes.forEach(e=>{
-        const created = new Date(e.created_at);
-        const n = (e.payload && e.payload.commits) ? e.payload.commits.length : 0;
-        if(created >= cutoff) commits30d += n;
-        dateSet.add(dateKey(created));
-        if(!lastPushDate || created>lastPushDate) lastPushDate = created;
-      });
-
-      let streak = 0;
-      if(dateSet.size>0){
-        let cursor = new Date();
-        // allow streak to start counting from today or yesterday
-        if(!dateSet.has(dateKey(cursor))) cursor.setDate(cursor.getDate()-1);
-        while(dateSet.has(dateKey(cursor))){
-          streak++;
-          cursor.setDate(cursor.getDate()-1);
-        }
-      }
-
-      const daysSince = lastPushDate ? Math.floor((now - lastPushDate)/(24*60*60*1000)) : null;
-
-      lastStats = { commits30d, streak, daysSince };
-      paint();
-    }catch(err){
-      errEl.textContent = err.message || 'Something went wrong loading that profile.';
-    }finally{
-      btn.disabled = false; btn.textContent='Hatch';
-    }
-  }
-
-  document.getElementById('loadForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const u = document.getElementById('username').value.trim();
-    if(u) loadGitHub(u);
-  });
-  document.getElementById('refreshBtn').addEventListener('click', function(){
-    const u = document.getElementById('username').value.trim();
-    if(u) loadGitHub(u);
-  });
-  document.getElementById('petName').addEventListener('input', paint);
-  document.getElementById('petBtn').addEventListener('click', function(){
-    const svg = document.getElementById('sprite');
-    svg.classList.remove('bounce'); void svg.offsetWidth; svg.classList.add('bounce');
-    const bubble = document.getElementById('bubble');
-    const old = bubble.textContent;
-    bubble.textContent = `${petDisplayName()} nuzzles your cursor. 💜`;
-    setTimeout(()=>{ paint(); }, 1400);
-  });
-
-  paint();
-  const initialUser = document.getElementById('username').value.trim();
-  if(initialUser) loadGitHub(initialUser);
-})();
-</script>
 </body>
 </html>
